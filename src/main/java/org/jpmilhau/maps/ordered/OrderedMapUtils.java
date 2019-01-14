@@ -13,6 +13,10 @@ import org.paumard.streams.StreamsUtils;
 
 public class OrderedMapUtils {
 	
+	private OrderedMapUtils() {
+		throw new IllegalStateException("Utility class");
+	}
+	
 	public static <K, V, R> LinkedHashMap<K, Operation<K, R>> apply(LinkedHashMap<K, V> map, BiFunction<V, V, R> biFunction) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biFunction);
