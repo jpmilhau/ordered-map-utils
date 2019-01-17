@@ -34,10 +34,10 @@ OrderedMapUtils.apply(temperatures, (t1, t2) -> (t2 - t1)).values().stream()
   );  
 ```
 
-  From Fri Jan 01 2016 To Sat Jan 02 2016 : 1.1
-  From Sat Jan 02 2016 To Sun Jan 03 2016 : -2.3
-  ...
-  From Fri Dec 30 2016 To Sat Dec 31 2016 : -1.3
+From Fri Jan 01 2016 To Sat Jan 02 2016 : 1.1\
+From Sat Jan 02 2016 To Sun Jan 03 2016 : -2.3\
+...\
+From Fri Dec 30 2016 To Sat Dec 31 2016 : -1.3
 
 ## Filter all maximum of an operation
 Maximum day-to-day thermal amplitude:
