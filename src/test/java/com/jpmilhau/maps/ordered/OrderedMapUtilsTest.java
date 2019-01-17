@@ -1,4 +1,4 @@
-package org.jpmilhau.maps.ordered;
+package com.jpmilhau.maps.ordered;
 
 /*-
  * #%L
@@ -28,6 +28,10 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.junit.Test;
+
+import com.jpmilhau.maps.ordered.KeyPair;
+import com.jpmilhau.maps.ordered.Operation;
+import com.jpmilhau.maps.ordered.OrderedMapUtils;
 
 import static org.junit.Assert.*;
 

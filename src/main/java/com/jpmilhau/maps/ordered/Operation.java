@@ -1,4 +1,4 @@
-package org.jpmilhau.maps.ordered;
+package com.jpmilhau.maps.ordered;
 
 /*-
  * #%L
