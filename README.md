@@ -1,5 +1,6 @@
 # OrderedMapUtils
-Build status: [![build_status](https://travis-ci.com/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.com/jpmilhau/ordered-map-utils)
+[![build_status](https://travis-ci.com/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.com/jpmilhau/ordered-map-utils)\
+\
 Provide utils to work on consecutive elements in an ordered map.
 
 Let's imagine you have a LinkedHashMap of temperature records.
