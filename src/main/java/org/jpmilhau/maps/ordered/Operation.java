@@ -20,6 +20,14 @@ package org.jpmilhau.maps.ordered;
  * #L%
  */
 
+/**
+ * Class to store the result of an operation applied to the values of a key and its next key in a ordered map
+ * 
+ * @author Jean-Pierre Milhau
+ *
+ * @param <K> the type of a key
+ * @param <R> the type of the result of the operation
+ */
 public final class Operation<K, R> {
 	
 	private final K key;

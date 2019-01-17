@@ -20,6 +20,13 @@ package org.jpmilhau.maps.ordered;
  * #L%
  */
 
+/**
+ * Class to store a key and its next key in an ordered map
+ * 
+ * @author Jean-Pierre Milhau
+ *
+ * @param <K> the type of the key
+ */
 public final class KeyPair<K> {
 	
 	private final K key;
