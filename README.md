@@ -61,11 +61,11 @@ OrderedMapUtils.filterAllMin(temperatures, (t1, t2) -> Math.abs(t2 - t1)).stream
   );  
 ```
 
-From Sun Mar 27 2016 To Mon Mar 28 2016 : 0.0
-From Wed Jun 29 2016 To Thu Jun 30 2016 : 0.0
-From Wed Aug 24 2016 To Thu Aug 25 2016 : 0.0
-From Fri Sep 02 2016 To Sat Sep 03 2016 : 0.0
-From Wed Nov 30 2016 To Thu Dec 01 2016 : 0.0
+From Sun Mar 27 2016 To Mon Mar 28 2016 : 0.0\
+From Wed Jun 29 2016 To Thu Jun 30 2016 : 0.0\
+From Wed Aug 24 2016 To Thu Aug 25 2016 : 0.0\
+From Fri Sep 02 2016 To Sat Sep 03 2016 : 0.0\
+From Wed Nov 30 2016 To Thu Dec 01 2016 : 0.0\
 From Tue Dec 06 2016 To Wed Dec 07 2016 : 0.0
 
 ## Find the average of an operation
@@ -87,10 +87,10 @@ OrderedMapUtils.test(temperatures, (t1, t2) -> Math.abs(t2 - t1) >= 8f).values()
   );
 ```
 
-From Fri Jan 01 2016 to Sat Jan 02 CET 2016 : false
-From Sat Jan 02 2016 to Sun Jan 03 2016 : false
-...
-From Sat Apr 02 2016 to Sun Apr 03 2016 : true
+From Fri Jan 01 2016 to Sat Jan 02 CET 2016 : false\
+From Sat Jan 02 2016 to Sun Jan 03 2016 : false\
+...\
+From Sat Apr 02 2016 to Sun Apr 03 2016 : true\
 ...
 
 ## Filter by a test
@@ -103,8 +103,8 @@ OrderedMapUtils.filterTests(temperatures, (t1, t2) -> Math.abs(t2 - t1) >= 8f, t
   );
 ```
 
-From Sat Apr 02 2016 to Sun Apr 03 2016
-From Fri May 13 2016 to Sat May 14 2016
+From Sat Apr 02 2016 to Sun Apr 03 2016\
+From Fri May 13 2016 to Sat May 14 2016\
 From Sat May 21 2016 to Sun May 22 2016
 
 ## Filter by a grouped of consecutive successful tests
@@ -129,7 +129,7 @@ OrderedMapUtils.filterAllMaxGroupedConsecutiveTests(temperatures, (t1, t2) -> t2
   );  
 ```
 
-From Wed Jul 13 2016 to Tue Jul 19 2016
+From Wed Jul 13 2016 to Tue Jul 19 2016\
 From Tue Dec 20 2016 to Mon Dec 26 2016
 
 ## Find the average a grouped of consecutive successful tests
