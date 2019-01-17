@@ -72,7 +72,8 @@ From Tue Dec 06 2016 To Wed Dec 07 2016 : 0.0
 Average day-to-day thermal amplitude:
 
 ```java
-System.out.println("Average day-to-day thermal amplitude: " + OrderedMapUtils.average(temperatures, (t1, t2) -> Math.abs(t2 - t1)));  
+System.out.println("Average day-to-day thermal amplitude: " //
++ OrderedMapUtils.average(temperatures, (t1, t2) -> Math.abs(t2 - t1)));  
 ```
 
 Average day-to-day thermal amplitude: 2.1
@@ -136,7 +137,8 @@ From Tue Dec 20 2016 to Mon Dec 26 2016
 Average duration of consecutive days of temperature increase:
 
 ```java
-System.out.println("Average duration of consecutive days of temperature increase: "  + OrderedMapUtils.averageGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true));  
+System.out.println("Average duration of consecutive days of temperature increase: " //
++ OrderedMapUtils.averageGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true));  
 ``` 
 
 Average duration of consecutive days of temperature increase: 1.8
