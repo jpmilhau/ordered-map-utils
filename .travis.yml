@@ -1,1 +1,2 @@
 language: java
+Build status: [![build_status](https://travis-ci.com/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.com/jpmilhau/ordered-map-utils)
