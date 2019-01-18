@@ -25,6 +25,13 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 
+/**
+ * 
+ * Test data
+ * 
+ * @author Jean-Pierre Milhau
+ *
+ */
 public class TestData {
 	
 	private static final TestData instance = new TestData();

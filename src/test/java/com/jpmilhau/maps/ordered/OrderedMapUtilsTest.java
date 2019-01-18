@@ -35,6 +35,13 @@ import com.jpmilhau.maps.ordered.OrderedMapUtils;
 
 import static org.junit.Assert.*;
 
+/**
+ * 
+ * Test of OrderedMapUtils
+ * 
+ * @author Jean-Pierre Milhau
+ *
+ */
 public class OrderedMapUtilsTest {
 	
 	private final static SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
