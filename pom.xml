@@ -20,6 +20,37 @@
 		</dependency>
 	</dependencies>
 	
+	<licenses>
+		<license>
+			<name>Apache License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+			<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+		<connection>scm:git:https://github.com/jpmilhau/ordered-map-utils.git</connection>
+		<url>https://github.com/jpmilhau/ordered-map-utils</url>
+	</scm>
+
+	<distributionManagement>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
+	</distributionManagement>
+
+	<developers>
+		<developer>
+			<name>Jean-Pierre Milhau</name>
+			<email>jeanpierre.milhau@orange.fr</email>
+		</developer>
+	</developers>
+	
 	<build>
 		<plugins>
 			<plugin>
