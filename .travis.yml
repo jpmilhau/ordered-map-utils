@@ -20,8 +20,7 @@ before_deploy:
 ## Create release in GitHub 
 deploy:
   provider: releases
-  api_key:
-    secure: 336a8699d32c326224bc2e11e1f5c37832984fc6
+  api_key: 336a8699d32c326224bc2e11e1f5c37832984fc6
   file: target/ordered-map-utils-$project_version.jar
   skip_cleanup: true
   on:
