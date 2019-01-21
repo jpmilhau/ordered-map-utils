@@ -3,7 +3,10 @@
  	<groupId>com.jpmilhau</groupId>
 	<artifactId>ordered-map-utils</artifactId>
 	<version>1.0.0</version>
+	
 	<name>OrderedMapUtils</name>
+	<url>https://github.com/jpmilhau/ordered-map-utils</url>
+    <description>A library to work on consecutive elements in an ordered map</description>
 	
 	<dependencies>
  		<dependency>
