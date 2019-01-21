@@ -18,15 +18,15 @@ before_deploy:
   - export project_version=$(mvn help:evaluate -N -Dexpression=project.version|grep -v '\[')
     
 ## Create release in GitHub 
-## deploy:
-##   provider: releases
-##   api_key:
-##     secure: GZ+EdPFAMyzgCYszdK3KrFyl0u9p09dgRYevRgdtln4ayKG0RzLXouJe+XCtER7VZejULimoQ+EgqeLMueTA/bqzhpP/M1ezY92FTAuiX4/aG2uVX8eW5dxyCCw5Aa3zdivmYruXIGFi0jd8gOGdQij4JB+DuRaguHvCwUsUg+/aFyLi9Nv8+mypnZzsboRm0jMa2F5JxJRPZWctpvN9JYjc0j7iplcY5hd+og0p9lOjiL5WvxmBTVDDWNuL5WzPaMJbkwVbUogBAnB3CXnS1p/IMuWMacklAde3bxu9QXwguG3HCeSrqbWuedS9hjd5ohkW+dfQ9zqU2rSThSAaSlPaScH/uwKletyAtQmgkx+hM1/zqQ0chSDgR5Iq7VXE9OZ3DwII3jBFAmuUSuYdF0wq7gTdTA4o4sgC8XlolGSjW0dczJDlfr/rcPqi6AnhCw5PwwSi8VfHDqA2xAuBieFuhYr99S7tk74kpXVjn0/7LDMk3zjxISYSlX4bn5ltG1IcbuKk82dxvSyZ35LwCrWwMgAFiNSWa0qrZijNtWkMwXnPDCoxV9YHQYoDy/fjH6XlqM3TwuufOmZ0ioxxzS77ZJyWgT3CSgBifpCR6EEF5lNa2Fuar/vEFK32cLhj3R23ttTT4nDmdwrzi8BnHOJZjELVjhYC3SZ2l1zdPLA=
-##   file: target/ordered-map-utils-$project_version.jar
-##   skip_cleanup: true
-##   on:
-##     repo: jpmilhau/ordered-map-utils
-##   name: $project_version
+deploy:
+  provider: releases
+  api_key:
+    secure: GZ+EdPFAMyzgCYszdK3KrFyl0u9p09dgRYevRgdtln4ayKG0RzLXouJe+XCtER7VZejULimoQ+EgqeLMueTA/bqzhpP/M1ezY92FTAuiX4/aG2uVX8eW5dxyCCw5Aa3zdivmYruXIGFi0jd8gOGdQij4JB+DuRaguHvCwUsUg+/aFyLi9Nv8+mypnZzsboRm0jMa2F5JxJRPZWctpvN9JYjc0j7iplcY5hd+og0p9lOjiL5WvxmBTVDDWNuL5WzPaMJbkwVbUogBAnB3CXnS1p/IMuWMacklAde3bxu9QXwguG3HCeSrqbWuedS9hjd5ohkW+dfQ9zqU2rSThSAaSlPaScH/uwKletyAtQmgkx+hM1/zqQ0chSDgR5Iq7VXE9OZ3DwII3jBFAmuUSuYdF0wq7gTdTA4o4sgC8XlolGSjW0dczJDlfr/rcPqi6AnhCw5PwwSi8VfHDqA2xAuBieFuhYr99S7tk74kpXVjn0/7LDMk3zjxISYSlX4bn5ltG1IcbuKk82dxvSyZ35LwCrWwMgAFiNSWa0qrZijNtWkMwXnPDCoxV9YHQYoDy/fjH6XlqM3TwuufOmZ0ioxxzS77ZJyWgT3CSgBifpCR6EEF5lNa2Fuar/vEFK32cLhj3R23ttTT4nDmdwrzi8BnHOJZjELVjhYC3SZ2l1zdPLA=
+  file: target/ordered-map-utils-$project_version.jar
+  skip_cleanup: true
+  on:
+    repo: jpmilhau/ordered-map-utils
+  name: $project_version
 
 cache:
   directories:
