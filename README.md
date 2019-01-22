@@ -3,8 +3,10 @@
 [![build_status](https://travis-ci.org/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.org/jpmilhau/ordered-map-utils)
 [![Javadoc](https://javadoc-badge.appspot.com/com.jpmilhau/ordered-map-utils.svg?label=javadoc)](https://javadoc-badge.appspot.com/com.jpmilhau/ordered-map-utils)\
 \
-Provide utils to work on consecutive elements in an ordered map.
-
+Provide utils to work on consecutive elements in an ordered map.\
+\
+It uses the [StreamsUtils API](https://github.com/JosePaumard/streams-utils)\
+\
 Let's imagine you have a LinkedHashMap of temperature records.
 * key is the day of the year
 * value is the average temperature of the day
@@ -146,3 +148,10 @@ System.out.println("Average duration of consecutive days of temperature increase
 ``` 
 
 Average duration of consecutive days of temperature increase: 1.8
+
+```java
+Stream<String> stream = Stream.of("One", "Two", "Three", "Four", "Five");  
+StreamsUtils.roll(stream, 2)  
+        .map(s -> s.toArray(String[]::new))  
+        .forEach(a -> System.out.println(Arrays.toString(a)));
+```
