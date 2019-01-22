@@ -1,5 +1,7 @@
 # OrderedMapUtils
-[![build_status](https://travis-ci.com/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.com/jpmilhau/ordered-map-utils)\
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.jpmilhau/ordered-map-utils/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.jpmilhau/ordered-map-utils)
+[![build_status](https://travis-ci.org/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.org/jpmilhau/ordered-map-utils)
+[![Javadoc](https://javadoc-badge.appspot.com/com.jpmilhau/ordered-map-utils_1.0.0.svg?label=javadoc)](https://javadoc-badge.appspot.com/com.jpmilhau/ordered-map-utils_1.0.0)\
 \
 Provide utils to work on consecutive elements in an ordered map.
 
