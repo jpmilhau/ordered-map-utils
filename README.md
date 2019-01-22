@@ -148,10 +148,3 @@ System.out.println("Average duration of consecutive days of temperature increase
 ``` 
 
 Average duration of consecutive days of temperature increase: 1.8
-
-```java
-Stream<String> stream = Stream.of("One", "Two", "Three", "Four", "Five");  
-StreamsUtils.roll(stream, 2)  
-        .map(s -> s.toArray(String[]::new))  
-        .forEach(a -> System.out.println(Arrays.toString(a)));
-```
