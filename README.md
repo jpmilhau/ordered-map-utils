@@ -3,7 +3,7 @@
 [![build_status](https://travis-ci.org/jpmilhau/ordered-map-utils.svg?branch=master)](https://travis-ci.org/jpmilhau/ordered-map-utils)
 [![Javadoc](https://javadoc-badge.appspot.com/com.jpmilhau/ordered-map-utils.svg?label=javadoc)](https://javadoc-badge.appspot.com/com.jpmilhau/ordered-map-utils)\
 \
-Provide utils to work on consecutive elements in an ordered map.\
+Provide utils to work on consecutive elements in an ordered map (LinkedHashMap or SortedMap).\
 \
 It uses the [StreamsUtils API](https://github.com/JosePaumard/streams-utils)\
 \

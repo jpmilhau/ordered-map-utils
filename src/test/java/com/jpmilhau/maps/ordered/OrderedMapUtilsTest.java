@@ -26,6 +26,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
 
 import org.junit.Test;
 
@@ -48,8 +50,121 @@ public class OrderedMapUtilsTest {
 	
 	@Test
 	public void applyTest() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		LinkedHashMap<Date, Operation<Date, Float>> results = OrderedMapUtils.apply(temperatures, (t1, t2) -> (t2 - t1));
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		LinkedHashMap<Date, Operation<Date, Float>> results1 = OrderedMapUtils.apply(temperatures1, (t1, t2) -> (t2 - t1));
+		checkApplyResults(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		SortedMap<Date, Operation<Date, Float>> results2 = OrderedMapUtils.apply(temperatures2, (t1, t2) -> (t2 - t1));
+		checkApplyResults(results2);
+	}
+	
+	@Test
+	public void filterAllMaxTest() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<Operation<Date, Float>> results1 = OrderedMapUtils.filterAllMax(temperatures1, (t1, t2) -> Math.abs(t2 - t1));
+		checkFilterAllMaxResults(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		List<Operation<Date, Float>> results2 = OrderedMapUtils.filterAllMax(temperatures2, (t1, t2) -> Math.abs(t2 - t1));
+		checkFilterAllMaxResults(results2);
+	}
+	
+	@Test
+	public void filterAllMinTest() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<Operation<Date, Float>> results1 = OrderedMapUtils.filterAllMin(temperatures1, (t1, t2) -> Math.abs(t2 - t1));
+		checkFilterAllMinResults(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		List<Operation<Date, Float>> results2 = OrderedMapUtils.filterAllMin(temperatures2, (t1, t2) -> Math.abs(t2 - t1));
+		checkFilterAllMinResults(results2);
+	}
+	
+	@Test
+	public void averageTest() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		double result1 = OrderedMapUtils.average(temperatures1, (t1, t2) -> Math.abs(t2 - t1));
+		checkAverageResult(result1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		double result2 = OrderedMapUtils.average(temperatures2, (t1, t2) -> Math.abs(t2 - t1));
+		checkAverageResult(result2);
+	}
+	
+	@Test
+	public void testTest() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		LinkedHashMap<Date, Operation<Date, Boolean>> results1 = OrderedMapUtils.test(temperatures1, (t1, t2) -> Math.abs(t2 - t1) >= 8f);
+		checkTestResults(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		SortedMap<Date, Operation<Date, Boolean>> results2 = OrderedMapUtils.test(temperatures2, (t1, t2) -> Math.abs(t2 - t1) >= 8f);
+		checkTestResults(results2);
+	}
+	
+	@Test
+	public void testFilterTests() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<KeyPair<Date>> results1 = OrderedMapUtils.filterTests(temperatures1, (t1, t2) -> Math.abs(t2 - t1) >= 8f, true);
+		checkFilterTestsResults(results1);
+		
+		LinkedHashMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<KeyPair<Date>> results2 = OrderedMapUtils.filterTests(temperatures2, (t1, t2) -> Math.abs(t2 - t1) >= 8f, true);
+		checkFilterTestsResults(results2);
+	}
+	
+	@Test
+	public void testFilterGroupedConsecutiveTests() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<List<KeyPair<Date>>> results1 = OrderedMapUtils.filterGroupedConsecutiveTests(temperatures1, (t1, t2) -> t2 - t1 > 0f, true);
+		checkFilterGroupedConsecutiveTestsResults1(results1);
+		
+		results1 = OrderedMapUtils.filterGroupedConsecutiveTests(temperatures1, (t1, t2) -> t2 - t1 > 0f, true, 5, 5);
+		checkFilterGroupedConsecutiveTestsResults2(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		List<List<KeyPair<Date>>> results2 = OrderedMapUtils.filterGroupedConsecutiveTests(temperatures2, (t1, t2) -> t2 - t1 > 0f, true);
+		checkFilterGroupedConsecutiveTestsResults1(results2);
+		
+		results2 = OrderedMapUtils.filterGroupedConsecutiveTests(temperatures2, (t1, t2) -> t2 - t1 > 0f, true, 5, 5);
+		checkFilterGroupedConsecutiveTestsResults2(results2);
+	}
+	
+	@Test
+	public void testFilterAllMaxGroupedConsecutiveTests() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<List<KeyPair<Date>>> results1 = OrderedMapUtils.filterAllMaxGroupedConsecutiveTests(temperatures1, (t1, t2) -> t2 - t1 > 0f, true);
+		checkFilterAllMaxGroupedConsecutiveTestsResults(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		List<List<KeyPair<Date>>> results2 = OrderedMapUtils.filterAllMaxGroupedConsecutiveTests(temperatures2, (t1, t2) -> t2 - t1 > 0f, true);
+		checkFilterAllMaxGroupedConsecutiveTestsResults(results2);
+	}
+	
+	@Test
+	public void testFilterAllMinGroupedConsecutiveTests() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		List<List<KeyPair<Date>>> results1 = OrderedMapUtils.filterAllMinGroupedConsecutiveTests(temperatures1, (t1, t2) -> t2 - t1 > 0f, true);
+		checkFilterAllMinGroupedConsecutiveTestsResults(results1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		List<List<KeyPair<Date>>> results2 = OrderedMapUtils.filterAllMinGroupedConsecutiveTests(temperatures2, (t1, t2) -> t2 - t1 > 0f, true);
+		checkFilterAllMinGroupedConsecutiveTestsResults(results2);
+	}
+	
+	@Test
+	public void averageGroupedConsecutiveTests() throws ParseException {
+		LinkedHashMap<Date, Float> temperatures1 = TestData.getInstance().getTemperaturesAsLinkedHashMap();
+		double result1 = OrderedMapUtils.averageGroupedConsecutiveTests(temperatures1, (t1, t2) -> t2 - t1 > 0f, true);
+		checkAverageGroupedConsecutiveTestsResult(result1);
+		
+		SortedMap<Date, Float> temperatures2 = TestData.getInstance().getTemperaturesAsSortedMap();
+		double result2 = OrderedMapUtils.averageGroupedConsecutiveTests(temperatures2, (t1, t2) -> t2 - t1 > 0f, true);
+		checkAverageGroupedConsecutiveTestsResult(result2);
+	}
+	
+	private void checkApplyResults(Map<Date, Operation<Date, Float>> results) throws ParseException {
 		assertEquals(365, results.size());
 		
 		assertEquals(formatter.parse("01/01/2016"), results.get(formatter.parse("01/01/2016")).getKey());
@@ -66,22 +181,16 @@ public class OrderedMapUtilsTest {
 		
 		assertNull(results.get(formatter.parse("31/12/2016")));
 	}
-	
-	@Test
-	public void filterAllMaxTest() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		List<Operation<Date, Float>> results = OrderedMapUtils.filterAllMax(temperatures, (t1, t2) -> Math.abs(t2 - t1));
+
+	private void checkFilterAllMaxResults(List<Operation<Date, Float>> results) throws ParseException {
 		assertEquals(1, results.size());
 		
 		assertEquals(formatter.parse("02/04/2016"), results.get(0).getKey());
 		assertEquals(formatter.parse("03/04/2016"), results.get(0).getNextKey());
 		assertFloatEquality(Float.valueOf(10f), results.get(0).getResult());
 	}
-	
-	@Test
-	public void filterAllMinTest() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		List<Operation<Date, Float>> results = OrderedMapUtils.filterAllMin(temperatures, (t1, t2) -> Math.abs(t2 - t1));
+
+	private void checkFilterAllMinResults(List<Operation<Date, Float>> results) throws ParseException {
 		assertEquals(6, results.size());
 		
 		assertEquals(formatter.parse("27/03/2016"), results.get(0).getKey());
@@ -108,18 +217,12 @@ public class OrderedMapUtilsTest {
 		assertEquals(formatter.parse("07/12/2016"), results.get(5).getNextKey());
 		assertFloatEquality(Float.valueOf(0f), results.get(5).getResult());
 	}
-	
-	@Test
-	public void averageTest() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		double result = OrderedMapUtils.average(temperatures, (t1, t2) -> Math.abs(t2 - t1));
+
+	private void checkAverageResult(double result) {
 		assertDoubleEquality(Double.valueOf(2.187f), result);
 	}
-	
-	@Test
-	public void testTest() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		LinkedHashMap<Date, Operation<Date, Boolean>> results = OrderedMapUtils.test(temperatures, (t1, t2) -> Math.abs(t2 - t1) >= 8f);
+
+	private void checkTestResults(Map<Date, Operation<Date, Boolean>> results) throws ParseException {
 		assertEquals(365, results.size());
 		
 		assertEquals(formatter.parse("01/01/2016"), results.get(formatter.parse("01/01/2016")).getKey());
@@ -136,11 +239,8 @@ public class OrderedMapUtilsTest {
 		
 		assertNull(results.get(formatter.parse("31/12/2016")));
 	}
-	
-	@Test
-	public void testFilterTests() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		List<KeyPair<Date>> results = OrderedMapUtils.filterTests(temperatures, (t1, t2) -> Math.abs(t2 - t1) >= 8f, true);
+
+	private void checkFilterTestsResults(List<KeyPair<Date>> results) throws ParseException {
 		assertEquals(3, results.size());
 		
 		assertEquals(formatter.parse("02/04/2016"), results.get(0).getKey());
@@ -152,24 +252,19 @@ public class OrderedMapUtilsTest {
 		assertEquals(formatter.parse("21/05/2016"), results.get(2).getKey());
 		assertEquals(formatter.parse("22/05/2016"), results.get(2).getNextKey());
 	}
-	
-	@Test
-	public void testFilterGroupedConsecutiveTests() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		List<List<KeyPair<Date>>> results = OrderedMapUtils.filterGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true);
+
+	private void checkFilterGroupedConsecutiveTestsResults1(List<List<KeyPair<Date>>> results) {
 		assertEquals(102, results.size());
-		
-		results = OrderedMapUtils.filterGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true, 5, 5);
+	}
+
+	private void checkFilterGroupedConsecutiveTestsResults2(List<List<KeyPair<Date>>> results) throws ParseException {
 		assertEquals(1, results.size());
 		
 		assertEquals(formatter.parse("19/09/2016"), results.get(0).get(0).getKey());
 		assertEquals(formatter.parse("24/09/2016"), results.get(0).get(4).getNextKey());
 	}
-	
-	@Test
-	public void testFilterAllMaxGroupedConsecutiveTests() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		List<List<KeyPair<Date>>> results = OrderedMapUtils.filterAllMaxGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true);
+
+	private void checkFilterAllMaxGroupedConsecutiveTestsResults(List<List<KeyPair<Date>>> results) throws ParseException {
 		assertEquals(2, results.size());
 		
 		assertEquals(6, results.get(0).size());
@@ -180,18 +275,12 @@ public class OrderedMapUtilsTest {
 		assertEquals(formatter.parse("20/12/2016"), results.get(1).get(0).getKey());
 		assertEquals(formatter.parse("26/12/2016"), results.get(1).get(5).getNextKey());
 	}
-	
-	@Test
-	public void testFilterAllMinGroupedConsecutiveTests() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		List<List<KeyPair<Date>>> results = OrderedMapUtils.filterAllMinGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true);
+
+	private void checkFilterAllMinGroupedConsecutiveTestsResults(List<List<KeyPair<Date>>> results) {
 		assertEquals(55, results.size());
 	}
-	
-	@Test
-	public void averageGroupedConsecutiveTests() throws ParseException {
-		LinkedHashMap<Date, Float> temperatures = TestData.getInstance().getTemperatures();
-		double result = OrderedMapUtils.averageGroupedConsecutiveTests(temperatures, (t1, t2) -> t2 - t1 > 0f, true);
+
+	private void checkAverageGroupedConsecutiveTestsResult(double result) {
 		assertDoubleEquality(Double.valueOf(1.814f), result);
 	}
 

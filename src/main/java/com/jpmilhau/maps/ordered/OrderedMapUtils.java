@@ -25,14 +25,17 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.function.BiFunction;
 import java.util.function.BiPredicate;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 import org.paumard.streams.StreamsUtils;
 
 /**
- * Provide utils to work on consecutive elements in an ordered map. 
+ * Provide utils to work on consecutive elements in an ordered map ({@link #java.util.LinkedHashMap} or {@link #java.util.SortedMap}). 
  * 
  * @author Jean-Pierre Milhau
  *
@@ -47,20 +50,37 @@ public class OrderedMapUtils {
 	 * Apply a function to consecutive values in an ordered map
 	 * @param map the ordered map
 	 * @param biFunction the function to apply to consecutive values in the ordered map
-	 * @return an ordered map with the same keys of the input map but the last one as it has no successor and the result of the function applied to values of the key and its next key
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
+	 * @return an ordered map with the same keys of the input map but the last one because it has no successor and the result of the function applied to two consecutive values
 	 */
 	public static <K, V, R> LinkedHashMap<K, Operation<K, R>> apply(LinkedHashMap<K, V> map, BiFunction<V, V, R> biFunction) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biFunction);
 		checkNotSingleEntry(map);
 		
-		return applyFunctionToConsecutiveElements(map, biFunction);
+		return (LinkedHashMap<K, Operation<K, R>>) applyFunctionToConsecutiveElements(map, biFunction);
+	}
+	
+	/**
+	 * @see #apply(LinkedHashMap, BiFunction)
+	 */
+	public static <K, V, R> SortedMap<K, Operation<K, R>> apply(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biFunction);
+		checkNotSingleEntry(map);
+		
+		return (SortedMap<K, Operation<K, R>>) applyFunctionToConsecutiveElements(map, biFunction);
 	}
 		
 	/**
 	 * Filter all maximum after a function be applied to consecutive values in an ordered map
 	 * @param map the ordered map
 	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
 	 * @return a list of all maximum after a function be applied to consecutive values in the ordered map
 	 */
 	public static <K, V, R extends Comparable<? super R>> List<Operation<K, R>> filterAllMax(LinkedHashMap<K, V> map, BiFunction<V, V, R> biFunction) {
@@ -72,9 +92,23 @@ public class OrderedMapUtils {
 	}
 	
 	/**
+	 * @see #filterAllMax(LinkedHashMap, BiFunction)
+	 */
+	public static <K, V, R extends Comparable<? super R>> List<Operation<K, R>> filterAllMax(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biFunction);
+		checkNotSingleEntry(map);
+		
+		return filterMaxResults(applyFunctionToConsecutiveElements(map, biFunction));
+	}
+	
+	/**
 	 * Filter all minimum after a function be applied to consecutive values in an ordered map
 	 * @param map the ordered map
 	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
 	 * @return a list of all minimum after a function be applied to consecutive values in the ordered map
 	 */
 	public static <K, V, R extends Comparable<? super R>> List<Operation<K, R>> filterAllMin(LinkedHashMap<K, V> map, BiFunction<V, V, R> biFunction) {
@@ -86,9 +120,23 @@ public class OrderedMapUtils {
 	}
 	
 	/**
+	 * @see #filterAllMin(LinkedHashMap, BiFunction)
+	 */
+	public static <K, V, R extends Comparable<? super R>> List<Operation<K, R>> filterAllMin(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biFunction);
+		checkNotSingleEntry(map);
+		
+		return filterMinResults(applyFunctionToConsecutiveElements(map, biFunction));
+	}
+	
+	/**
 	 * Compute the average after a function be applied to consecutive values in an ordered map
 	 * @param map the ordered map
 	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
 	 * @return the average after a function be applied to consecutive values in an ordered map
 	 */
 	public static <K , V, R extends Number> double average(LinkedHashMap<K, V> map, BiFunction<V, V, R> biFunction) {
@@ -100,17 +148,41 @@ public class OrderedMapUtils {
 	}
 	
 	/**
+	 * @see #average(LinkedHashMap, BiFunction)
+	 */
+	public static <K , V, R extends Number> double average(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biFunction);
+		checkNotSingleEntry(map);
+
+		return averageResults(applyFunctionToConsecutiveElements(map, biFunction));
+	}
+	
+	/**
 	 * Apply a predicate to consecutive values in an ordered map
 	 * @param map the ordered map
 	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return an ordered map with the same keys of the input map but the last one as it has no successor and the result of the predicate applied to values of the key and its next key
 	 */
-	public static <K, V, R> LinkedHashMap<K, Operation<K, Boolean>> test(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate) {
+	public static <K, V> LinkedHashMap<K, Operation<K, Boolean>> test(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
 
-		return applyPredicateToConsecutiveElements(map, biPredicate);
+		return (LinkedHashMap<K, Operation<K, Boolean>>) applyPredicateToConsecutiveElements(map, biPredicate);
+	}
+	
+	/**
+	 * @see #test(LinkedHashMap, BiPredicate)
+	 */
+	public static <K, V> SortedMap<K, Operation<K, Boolean>> test(SortedMap<K, V> map, BiPredicate<V, V> biPredicate) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+
+		return (SortedMap<K, Operation<K, Boolean>>) applyPredicateToConsecutiveElements(map, biPredicate);
 	}
 	
 	/**
@@ -118,9 +190,22 @@ public class OrderedMapUtils {
 	 * @param map the ordered map
 	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
 	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return a list of keys and its successor for which the values match match or do not match the predicate
 	 */
-	public static <K, V, R> List<KeyPair<K>> filterTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+	public static <K, V> List<KeyPair<K>> filterTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+
+		return filterTests(applyPredicateToConsecutiveElements(map, biPredicate), filter);
+	}
+	
+	/**
+	 * @see #filterTests(LinkedHashMap, BiPredicate, boolean)
+	 */
+	public static <K, V> List<KeyPair<K>> filterTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
@@ -133,9 +218,22 @@ public class OrderedMapUtils {
 	 * @param map the ordered map
 	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
 	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return a list of list of keys and its successor for which the values match match or do not match consecutively the predicate
 	 */
-	public static <K, V, R> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+	public static <K, V> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+
+		return findConsecutiveTests(map, biPredicate, filter);
+	}
+	
+	/**
+	 * @see #filterGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 */
+	public static <K, V, R> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
@@ -151,9 +249,22 @@ public class OrderedMapUtils {
 	 * @param filter whether the result must be positive (true) or negative (false)
 	 * @param minGroupSize minimum size of the group
 	 * @param maxGroupSize maximum size of the group
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return a list of list of keys and its successor, matching min and max size, for which the values match match or do not match consecutively the predicate
 	 */
-	public static <K, V, R> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter, int minGroupSize, int maxGroupSize) {
+	public static <K, V> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter, int minGroupSize, int maxGroupSize) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+
+		return findConsecutiveTests(map, biPredicate, filter, minGroupSize, maxGroupSize);
+	}
+	
+	/**
+	 * @see #filterGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 */
+	public static <K, V> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter, int minGroupSize, int maxGroupSize) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
@@ -166,9 +277,22 @@ public class OrderedMapUtils {
 	 * @param map the ordered map
 	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
 	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return a list of list of keys and its successor with maximum size for which the values match match or do not match consecutively the predicate
 	 */
 	public static <K, V> List<List<KeyPair<K>>> filterAllMaxGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+		
+		return findLongestLists(findConsecutiveTests(map, biPredicate, filter));
+	}
+	
+	/**
+	 * @see #filterAllMaxGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 */
+	public static <K, V> List<List<KeyPair<K>>> filterAllMaxGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
@@ -181,9 +305,22 @@ public class OrderedMapUtils {
 	 * @param map the ordered map
 	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
 	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return a list of list of keys and its successor with minimum size for which the values match match or do not match consecutively the predicate
 	 */
 	public static <K, V> List<List<KeyPair<K>>> filterAllMinGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+		
+		return findShortestLists(findConsecutiveTests(map, biPredicate, filter));
+	}
+	
+	/**
+	 * @see #filterAllMinGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 */
+	public static <K, V> List<List<KeyPair<K>>> filterAllMinGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
@@ -196,6 +333,8 @@ public class OrderedMapUtils {
 	 * @param map the ordered map
 	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
 	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return the average size of groups keys and its successors in the ordered map for which the values match or do not match consecutively the predicate
 	 */
 	public static <K, V> double averageGroupedConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
@@ -207,11 +346,32 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * Sort a map by key and return an ordered map as a LinkedHashMap
+	 * @see #averageGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 */
+	public static <K, V> double averageGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+		Objects.requireNonNull(map);
+		Objects.requireNonNull(biPredicate);
+		checkNotSingleEntry(map);
+		
+		return averageListSize(findConsecutiveTests(map, biPredicate, filter));
+	}
+		
+	/**
+	 * @deprecated use {@link #toLinkedHashMap(Map)} instead
+	 */
+	@Deprecated
+	public static <K extends Comparable<? super K>, V> LinkedHashMap<K, V> sortByKey(Map<K, V> map) {
+		return toLinkedHashMap(map);
+	}
+	
+	/**
+	 * Sort a map by key and build a LinkedHashMap
 	 * @param map a map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
 	 * @return an ordered map sorted by key as a LinkedHashMap
 	 */
-	public static <K extends Comparable<? super K>, V> LinkedHashMap<K, V> sortByKey(Map<K, V> map) {
+	public static <K extends Comparable<? super K>, V> LinkedHashMap<K, V> toLinkedHashMap(Map<K, V> map) {
 		return map.entrySet().stream() // use stream
 					.sorted(Map.Entry.<K, V>comparingByKey()) // sort by key
 					.collect( // build result map
@@ -223,7 +383,27 @@ public class OrderedMapUtils {
 					);
 	}
 	
-	private static <K, V, R> LinkedHashMap<K, Operation<K, R>> applyFunctionToConsecutiveElements(Map<K, V> map, BiFunction<V, V, R> biFunction) {
+	/**
+	 * Convert a map to a TreeMap (SortedMap)
+	 * @param map a map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return an ordered map as a TreeMap (SortedMap)
+	 */
+	public static <K extends Comparable<? super K>, V> TreeMap<K, V> toTreeMap(Map<K, V> map) {
+		return new TreeMap<K, V>(map);
+	}
+	
+	private static <K, V, R> Map<K, Operation<K, R>> applyFunctionToConsecutiveElements(Map<K, V> map, BiFunction<V, V, R> biFunction) {
+		@SuppressWarnings("unchecked")
+		Supplier<Map<K, Operation<K, R>>> mapSupplier = () -> {
+			try {
+				return map.getClass().newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new IllegalArgumentException(e);
+			} 
+		};
+		
 		return StreamsUtils.roll(map.entrySet().stream(), 2) // Roll the map
 							.map(e -> e.collect(Collectors.toList())).collect(Collectors.toList()) // Convert to List<List<Map.Entry<K, V>>> 
 							.stream()
@@ -231,12 +411,21 @@ public class OrderedMapUtils {
 								Collectors.toMap(
 									e -> e.get(0).getKey(), 
 									e -> new Operation<K, R>(e.get(0).getKey(), e.get(1).getKey(), biFunction.apply(e.get(0).getValue(), e.get(1).getValue())),
-									(e1, e2) -> e1, LinkedHashMap::new
+									(e1, e2) -> e1, mapSupplier
 								)
 							);
 	}
 	
-	private static <K, V> LinkedHashMap<K, Operation<K, Boolean>> applyPredicateToConsecutiveElements(Map<K, V> map, BiPredicate<V, V> biPredicate) {
+	private static <K, V> Map<K, Operation<K, Boolean>> applyPredicateToConsecutiveElements(Map<K, V> map, BiPredicate<V, V> biPredicate) {
+		@SuppressWarnings("unchecked")
+		Supplier<Map<K, Operation<K, Boolean>>> mapSupplier = () -> {
+			try {
+				return map.getClass().newInstance();
+			} catch (InstantiationException | IllegalAccessException e) {
+				throw new IllegalArgumentException(e);
+			} 
+		};
+		
 		return StreamsUtils.roll(map.entrySet().stream(), 2) // Roll the map
 			.map(e -> e.collect(Collectors.toList())).collect(Collectors.toList()) // Convert to List<List<Map.Entry<K, V>>> 
 			.stream()
@@ -244,12 +433,12 @@ public class OrderedMapUtils {
 				Collectors.toMap(
 					e -> e.get(0).getKey(), 
 					e -> new Operation<K, Boolean>(e.get(0).getKey(), e.get(1).getKey(), biPredicate.test(e.get(0).getValue(), e.get(1).getValue())),
-					(e1, e2) -> e1, LinkedHashMap::new
+					(e1, e2) -> e1, mapSupplier
 				)
 			);
 	}
 	
-	private static <K> List<KeyPair<K>> filterTests(LinkedHashMap<K, Operation<K, Boolean>> map, boolean filter) {
+	private static <K> List<KeyPair<K>> filterTests(Map<K, Operation<K, Boolean>> map, boolean filter) {
 		return map.entrySet()
 				.stream()
 				.filter(e -> e.getValue().getResult().booleanValue() == filter)
@@ -257,12 +446,12 @@ public class OrderedMapUtils {
 				.collect(Collectors.toList());
 	}
 	
-	private static <K, V> List<List<KeyPair<K>>> findConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
-		LinkedHashMap<K, Operation<K, Boolean>> resultMap = applyPredicateToConsecutiveElements(map, biPredicate);
+	private static <K, V> List<List<KeyPair<K>>> findConsecutiveTests(Map<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+		Map<K, Operation<K, Boolean>> resultMap = applyPredicateToConsecutiveElements(map, biPredicate);
 		return groupConsecutiveTests(resultMap, filter);
 	}
 	
-	private static <K, V> List<List<KeyPair<K>>> findConsecutiveTests(LinkedHashMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter, int minGroupSize, int maxGroupSize) {
+	private static <K, V> List<List<KeyPair<K>>> findConsecutiveTests(Map<K, V> map, BiPredicate<V, V> biPredicate, boolean filter, int minGroupSize, int maxGroupSize) {
 		return findConsecutiveTests(map, biPredicate, filter)
 				.stream()
 				.filter(e -> e.size() >= minGroupSize && e.size() <= maxGroupSize)

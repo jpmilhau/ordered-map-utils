@@ -23,7 +23,9 @@ package com.jpmilhau.maps.ordered;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.SortedMap;
 
 /**
  * 
@@ -36,14 +38,28 @@ public class TestData {
 	
 	private static final TestData instance = new TestData();
 	
-	private LinkedHashMap<Date, Float> temperatures;
+	private HashMap<Date, Float> temperatures;
+	
+	private LinkedHashMap<Date, Float> temperaturesAsLinkedHashMap;
+	
+	private SortedMap<Date, Float> temperaturesAsSortedMap;
 	
 	public static TestData getInstance() {
 		return instance;
 	}
 	
-	public LinkedHashMap<Date, Float> getTemperatures() {
-		return temperatures;
+	public LinkedHashMap<Date, Float> getTemperaturesAsLinkedHashMap() {
+		if (temperaturesAsLinkedHashMap == null) {
+			temperaturesAsLinkedHashMap = OrderedMapUtils.toLinkedHashMap(temperatures);
+		}
+		return temperaturesAsLinkedHashMap;
+	}
+	
+	public SortedMap<Date, Float> getTemperaturesAsSortedMap() {
+		if (temperaturesAsSortedMap == null) {
+			temperaturesAsSortedMap = OrderedMapUtils.toTreeMap(temperatures);
+		}
+		return temperaturesAsSortedMap;
 	}
 	
 	private TestData() {
@@ -51,7 +67,7 @@ public class TestData {
 	}
 	
 	private void initTemperatures() {
-		temperatures = new LinkedHashMap<Date, Float>();
+		temperatures = new HashMap<Date, Float>();
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 		try {
