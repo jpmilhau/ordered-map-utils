@@ -10,6 +10,7 @@ It uses the [StreamsUtils API](https://github.com/JosePaumard/streams-utils)\
 Let's imagine you have a LinkedHashMap of temperature records.
 * key is the day of the year
 * value is the average temperature of the day
+\
 Data come from the [meteorological station in Trappes (France)](http://www.meteociel.fr/climatologie/villes.php?code=7145&mois=1&annee=2016)
 
 ```java

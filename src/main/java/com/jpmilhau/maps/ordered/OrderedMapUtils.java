@@ -1,5 +1,7 @@
 package com.jpmilhau.maps.ordered;
 
+import java.lang.reflect.InvocationTargetException;
+
 /*-
  * #%L
  * OrderedMapUtils
@@ -471,8 +473,8 @@ public class OrderedMapUtils {
 		@SuppressWarnings("unchecked")
 		Supplier<Map<K, Operation<K, R>>> mapSupplier = () -> {
 			try {
-				return map.getClass().newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+				return map.getClass().getDeclaredConstructor().newInstance();
+			} catch (InstantiationException | IllegalAccessException |IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new IllegalArgumentException(e);
 			} 
 		};
@@ -493,8 +495,8 @@ public class OrderedMapUtils {
 		@SuppressWarnings("unchecked")
 		Supplier<Map<K, Operation<K, Boolean>>> mapSupplier = () -> {
 			try {
-				return map.getClass().newInstance();
-			} catch (InstantiationException | IllegalAccessException e) {
+				return map.getClass().getDeclaredConstructor().newInstance();
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				throw new IllegalArgumentException(e);
 			} 
 		};
