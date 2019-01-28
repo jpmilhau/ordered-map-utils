@@ -274,7 +274,7 @@ public class OrderedMapUtils {
 	 * @param <V> the value type of the map
 	 * @return a list of list of keys and its successor for which the values match match or do not match consecutively the predicate
 	 */
-	public static <K, V, R> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
+	public static <K, V> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
 		Objects.requireNonNull(biPredicate);
 		checkNotSingleEntry(map);
@@ -425,7 +425,12 @@ public class OrderedMapUtils {
 	}
 		
 	/**
+	 * Sort a map by key and build a LinkedHashMap
 	 * @deprecated use {@link #toLinkedHashMap(Map)} instead
+	 * @param map a map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return an ordered map sorted by key as a LinkedHashMap
 	 */
 	@Deprecated
 	public static <K extends Comparable<? super K>, V> LinkedHashMap<K, V> sortByKey(Map<K, V> map) {
