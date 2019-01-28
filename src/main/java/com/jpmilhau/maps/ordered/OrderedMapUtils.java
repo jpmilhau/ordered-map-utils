@@ -35,7 +35,7 @@ import java.util.stream.Collectors;
 import org.paumard.streams.StreamsUtils;
 
 /**
- * Provide utils to work on consecutive elements in an ordered map ({@link #java.util.LinkedHashMap} or {@link #java.util.SortedMap}). 
+ * Provide utils to work on consecutive elements in an ordered map ({@link java.util.LinkedHashMap} or {@link java.util.SortedMap}). 
  * 
  * @author Jean-Pierre Milhau
  *
