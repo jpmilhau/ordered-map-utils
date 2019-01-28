@@ -64,7 +64,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #apply(LinkedHashMap, BiFunction)
+	 * Apply a function to consecutive values in an ordered map
+	 * @param map the ordered map
+	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
+	 * @return an ordered map with the same keys of the input map but the last one because it has no successor and the result of the function applied to two consecutive values
 	 */
 	public static <K, V, R> SortedMap<K, Operation<K, R>> apply(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
 		Objects.requireNonNull(map);
@@ -92,7 +98,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterAllMax(LinkedHashMap, BiFunction)
+	 * Filter all maximum after a function be applied to consecutive values in an ordered map
+	 * @param map the ordered map
+	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
+	 * @return a list of all maximum after a function be applied to consecutive values in the ordered map
 	 */
 	public static <K, V, R extends Comparable<? super R>> List<Operation<K, R>> filterAllMax(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
 		Objects.requireNonNull(map);
@@ -120,7 +132,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterAllMin(LinkedHashMap, BiFunction)
+	 * Filter all minimum after a function be applied to consecutive values in an ordered map
+	 * @param map the ordered map
+	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
+	 * @return a list of all minimum after a function be applied to consecutive values in the ordered map
 	 */
 	public static <K, V, R extends Comparable<? super R>> List<Operation<K, R>> filterAllMin(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
 		Objects.requireNonNull(map);
@@ -148,7 +166,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #average(LinkedHashMap, BiFunction)
+	 * Compute the average after a function be applied to consecutive values in an ordered map
+	 * @param map the ordered map
+	 * @param biFunction the function to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @param <R> the type of the result of the function applied to two consecutive values
+	 * @return the average after a function be applied to consecutive values in an ordered map
 	 */
 	public static <K , V, R extends Number> double average(SortedMap<K, V> map, BiFunction<V, V, R> biFunction) {
 		Objects.requireNonNull(map);
@@ -175,7 +199,12 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #test(LinkedHashMap, BiPredicate)
+	 * Apply a predicate to consecutive values in an ordered map
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return an ordered map with the same keys of the input map but the last one as it has no successor and the result of the predicate applied to values of the key and its next key
 	 */
 	public static <K, V> SortedMap<K, Operation<K, Boolean>> test(SortedMap<K, V> map, BiPredicate<V, V> biPredicate) {
 		Objects.requireNonNull(map);
@@ -203,7 +232,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterTests(LinkedHashMap, BiPredicate, boolean)
+	 * Find all keys and its successors in an ordered map for which the values match or do not match a predicate 
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return a list of keys and its successor for which the values match match or do not match the predicate
 	 */
 	public static <K, V> List<KeyPair<K>> filterTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
@@ -231,7 +266,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 * Find all groups of keys and its successors in an ordered map for which the values match or do not match consecutively a predicate 
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return a list of list of keys and its successor for which the values match match or do not match consecutively the predicate
 	 */
 	public static <K, V, R> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
@@ -262,7 +303,16 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 * Find all groups of keys and its successors in an ordered map for which the values match or do not match consecutively a predicate
+	 * The groups must have a minimum and a maximum size.
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param minGroupSize minimum size of the group
+	 * @param maxGroupSize maximum size of the group
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return a list of list of keys and its successor, matching min and max size, for which the values match match or do not match consecutively the predicate
 	 */
 	public static <K, V> List<List<KeyPair<K>>> filterGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter, int minGroupSize, int maxGroupSize) {
 		Objects.requireNonNull(map);
@@ -290,7 +340,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterAllMaxGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 * Filter all groups of keys and its successors with maximum size in an ordered map for which the values match or do not match consecutively a predicate
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return a list of list of keys and its successor with maximum size for which the values match match or do not match consecutively the predicate
 	 */
 	public static <K, V> List<List<KeyPair<K>>> filterAllMaxGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
@@ -318,7 +374,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #filterAllMinGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 * Filter all groups of keys and its successors with minimum size in an ordered map for which the values match or do not match consecutively a predicate
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return a list of list of keys and its successor with minimum size for which the values match match or do not match consecutively the predicate
 	 */
 	public static <K, V> List<List<KeyPair<K>>> filterAllMinGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
@@ -346,7 +408,13 @@ public class OrderedMapUtils {
 	}
 	
 	/**
-	 * @see #averageGroupedConsecutiveTests(LinkedHashMap, BiPredicate, boolean)
+	 * Find the average size of groups keys and its successors in an ordered map for which the values match or do not match consecutively a predicate
+	 * @param map the ordered map
+	 * @param biPredicate the predicate to apply to consecutive values in the ordered map
+	 * @param filter whether the result must be positive (true) or negative (false)
+	 * @param <K> the key type of the map
+	 * @param <V> the value type of the map
+	 * @return the average size of groups keys and its successors in the ordered map for which the values match or do not match consecutively the predicate
 	 */
 	public static <K, V> double averageGroupedConsecutiveTests(SortedMap<K, V> map, BiPredicate<V, V> biPredicate, boolean filter) {
 		Objects.requireNonNull(map);
